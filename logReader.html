@@ -283,6 +283,29 @@
   color: #808080; /* Gray for null */
 }
 
+
+
+
+
+
+
+
+
+.theme-toggle .icon {
+    font-size: 24px;
+    transition: opacity 0.3s ease;
+    display: none;
+}
+
+body.light-mode .theme-toggle #icon-sun {
+    display: block;
+}
+
+body.dark-mode .theme-toggle #icon-moon {
+    display: block;
+}
+
+
       @media (max-width: 600px) {
         select,
         input[type="text"],
@@ -297,8 +320,10 @@
       <h2>Upload JSON file of API Log</h2>
 
       <body class="light-mode">
-        <button class="theme-toggle" onclick="toggleTheme()">Toggle Dark
-          Mode</button>
+        <button class="theme-toggle" onclick="toggleTheme()">
+          <span id="icon-sun" class="icon">&#x2600;</span>
+          <span id="icon-moon" class="icon">&#x1F319;</span>
+        </button>
       </body>
 
       <!-- <p style="text-align: left;">1. check log size in GET admin/api/v1/log/checkSize</p>
