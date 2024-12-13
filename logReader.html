@@ -19,7 +19,7 @@
 
         body.dark-mode {
           background-color: #121212;
-          color: #a6a6a6;
+          color: #d9d9d9;
         }
 
         body.dark-mode .container {
@@ -35,6 +35,10 @@
         body.dark-mode label {
           color: #d9d9d9;
         }
+
+        body.dark-mode td {
+        border: 1px solid #000000;
+      }
 
         body.dark-mode table {
           background-color: #2b2b2b;
@@ -678,7 +682,7 @@
           const end = start + rowsPerPage;
           const pageData = data.slice(start, end); // Get the data for the current page
           exportData = pageData;
-          console.log("exportData", exportData);
+          console.table(exportData);
 
           pageData.forEach((item) => {
             const row = document.createElement("tr");
@@ -690,25 +694,26 @@
 
 
               if (header === "method") {
-                if (localStorage.getItem('theme') === 'light') {
-                  td.style.backgroundColor = getColorForMethod(cellContent);
-                } else {
+                if (localStorage.getItem('theme') === 'dark') {
                   td.style.color = getColorForMethod(cellContent);
+                } else {
+                  td.style.backgroundColor = getColorForMethod(cellContent);
                 }
               }
               if (header === "status") {
-                if (localStorage.getItem('theme') === 'light') {
-                  td.style.backgroundColor = getColorForStatus(cellContent);
-                } else {
+                if (localStorage.getItem('theme') === 'dark') {
                   td.style.color = getColorForStatus(cellContent);
+                } else {
+                  td.style.backgroundColor = getColorForStatus(cellContent);
                 }
               }
 
               if (header === "serviceName") {
-                if (localStorage.getItem('theme') === 'light') {
-                  td.style.backgroundColor = getColorForCategory(cellContent);
-                } else {
+                if (localStorage.getItem('theme') === 'dark') {
                   td.style.color = getColorForCategory(cellContent);
+                } else {
+                  td.style.backgroundColor = getColorForCategory(cellContent);
+                  
                 }
               }
 
@@ -1197,7 +1202,6 @@ function syntaxHighlight(json) {
         updatePagination(); // Update pagination controls
       }
       function exportJSONToXLSX() {
-        console.log("exportDataexportData", exportData);
         const worksheet = XLSX.utils.json_to_sheet(exportData);
         const workbook = XLSX.utils.book_new();
         XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
@@ -1225,7 +1229,6 @@ function syntaxHighlight(json) {
         updatePagination();
       }
       function excelDateToJSDate(excelSerialDate) {
-        console.log("excelSerialDate", excelSerialDate);
         const startDate = new Date(1900, 0, 1);
         const days = Math.floor(excelSerialDate) - 1;
         const dateInMs = startDate.getTime() + days * 24 * 60 * 60 * 1000;
@@ -1236,7 +1239,6 @@ function syntaxHighlight(json) {
       }
       function toggleTheme() {
     const body = document.body;
-    console.log("body.classList.contains('light-mode')", body.classList.contains('light-mode'))
     if (body.classList.contains('light-mode')) {
       body.classList.remove('light-mode');
       body.classList.add('dark-mode');
