@@ -19,7 +19,7 @@
 
         body.dark-mode {
           background-color: #121212;
-          color: #e0e0e0;
+          color: #a6a6a6;
         }
 
         body.dark-mode .container {
@@ -33,7 +33,7 @@
         }
 
         body.dark-mode label {
-          color: #fffbfb;
+          color: #d9d9d9;
         }
 
         body.dark-mode table {
@@ -704,6 +704,16 @@
                 }
               }
 
+              if (header === "serviceName") {
+                if (localStorage.getItem('theme') === 'light') {
+                  td.style.backgroundColor = getColorForCategory(cellContent);
+                } else {
+                  td.style.color = getColorForCategory(cellContent);
+                }
+              }
+
+              
+
               // Check for expandable keys
               if (
                 expandableKeys.includes(header) &&
@@ -1093,6 +1103,43 @@ function syntaxHighlight(json) {
             return "white"; // Black for unknown status
         }
       }
+
+      function getColorForCategory(category) {
+  switch (category?.toLowerCase()) {
+    case "be-customer":
+      return "#A3D9B1"; // Soft mint green
+    case "be-pvd":
+      return "#FFE5B4"; // Soft apricot
+    case "be-admin":
+      return "#A6C8FF"; // Soft light blue
+    case "be-risk-profile":
+      return "#F8B8D0"; // Soft blush pink
+    case "be-salesforce":
+      return "#D8A9F1"; // Soft lavender
+    case "be-rsp":
+      return "#F1C2A3"; // Soft peach
+    case "be-payment":
+      return "#B3E2F5"; // Soft pale cyan
+    case "be-notification":
+      return "#F6D6A3"; // Soft butter yellow
+    case "be-kb-dso":
+      return "#D0F0C0"; // Soft celery green
+    case "be-invoice":
+      return "#FFEB99"; // Soft lemon yellow
+    case "be-order":
+      return "#D6E4D5"; // Soft sage green
+    case "be-otp":
+      return "#FFDAC1"; // Soft blush peach
+    case "be-email":
+      return "#B4E1F1"; // Soft sky blue
+    case "be-deeplink":
+      return "#F4B4D1"; // Soft coral pink
+    case "be-funds":
+      return "#C7B9F3"; // Soft pastel purple
+    default:
+      return "#F4F4F4"; // Very soft gray for unknown categories
+  }
+}
 
       function updatePagination() {
         const pageCount = Math.ceil(filteredData.length / rowsPerPage); // Calculate total pages
