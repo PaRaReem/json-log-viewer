@@ -368,7 +368,7 @@ body.light-mode #icon-moon {
   </head>
   <body>
     <div class="container">
-      <h2>Upload JSON file of API Log</h2>
+      <h2>Upload JSON or XLSX file of API Log</h2>
 
         <button class="theme-toggle" onclick="toggleTheme()">
           <span id="icon-sun" class="icon">&#x2600;</span>
@@ -596,20 +596,21 @@ body.light-mode #icon-moon {
                 const sheetData = XLSX.utils.sheet_to_json(
                   workbook.Sheets[sheetName]
                 );
-                sheetData.forEach((row) => {
-                  if (row.createdAt) {
-                    row.createdAt = excelDateToJSDate(
-                      row.createdAt
-                    ).toISOString();
-                  }
-                  if (row.created_at) {
-                    row.createdAt = excelDateToJSDate(
-                      row.created_at
-                    ).toISOString();
-                  }
-                });
+                // sheetData.forEach((row) => {
+                //   if (row.createdAt) {
+                //     row.createdAt = excelDateToJSDate(
+                //       row.createdAt
+                //     ).toISOString();
+                //   }
+                //   if (row.created_at) {
+                //     row.createdAt = excelDateToJSDate(
+                //       row.created_at
+                //     ).toISOString();
+                //   }
+                // });
                 jsonDataArray.push(...sheetData); // Merge Excel data
               } catch (error) {
+                console.log("error", error.message)
                 document.getElementById("output").innerText =
                   "Invalid Excel file.";
               }
@@ -641,6 +642,9 @@ body.light-mode #icon-moon {
       const toUTC7 = (dateString) => {
         if (!dateString) return "-";
         const date = new Date(dateString);
+        if (date == 'Invalid Date') {
+          return dateString
+        }
         date.setHours(date.getHours()); // Adjust for UTC+7
 
         // Extract individual components
@@ -758,7 +762,7 @@ body.light-mode #icon-moon {
           const end = start + rowsPerPage;
           const pageData = data.slice(start, end); // Get the data for the current page
           exportData = pageData;
-          console.table(exportData);
+          // console.table(exportData);
 
           pageData.forEach((item) => {
             const row = document.createElement("tr");
