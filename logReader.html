@@ -41,10 +41,10 @@
           border-color: #444;
         }
 
-        body.dark-mode th {
+        /* body.dark-mode th {
           background-color: #3e3e3e;
           color: #fff;
-        }
+        } */
 
         body.dark-mode tr:nth-child(even) {
           background-color: #242424;
@@ -687,11 +687,21 @@
               const cellContent = item[header];
 
               // Set background color based on method or status
+
+
               if (header === "method") {
-                td.style.backgroundColor = getColorForMethod(cellContent);
+                if (localStorage.getItem('theme') === 'light') {
+                  td.style.backgroundColor = getColorForMethod(cellContent);
+                } else {
+                  td.style.color = getColorForMethod(cellContent);
+                }
               }
               if (header === "status") {
-                td.style.backgroundColor = getColorForStatus(cellContent);
+                if (localStorage.getItem('theme') === 'light') {
+                  td.style.backgroundColor = getColorForStatus(cellContent);
+                } else {
+                  td.style.color = getColorForStatus(cellContent);
+                }
               }
 
               // Check for expandable keys
@@ -1179,6 +1189,7 @@ function syntaxHighlight(json) {
       }
       function toggleTheme() {
     const body = document.body;
+    console.log("body.classList.contains('light-mode')", body.classList.contains('light-mode'))
     if (body.classList.contains('light-mode')) {
       body.classList.remove('light-mode');
       body.classList.add('dark-mode');
