@@ -4,8 +4,68 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>JSON File Upload with Pagination and Expandable Columns</title>
-    <link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAAbFBMVEUAAAD///+qqqqioqKOjo6Tk5P39/fd3d2kpKTS0tL6+voZGRl1dXWFhYWhpaUtLS1mZmYODg5LS0tvb2/BwcFpampmZmaIiIhoXFyUlJSbm5tTU1NGRA9mAAABXUlEQVQY0zXMRw7CIBCF4auujptSEvv//y/CrAlsyTdyHg7DBmgeU9UMsgMuW5gmwEO8irKkmQoZWsdEHLXDBXv8dO0ys9mvhDehsoCfdPBsFkC72wmCXzXX9GG8SMeK5WbBU6hLXqOdw7rpFg6X+jPjLP/SmzyA2/T69gvZteCAQxbcmUpMuKQAAAABJRU5ErkJggg==">
+    <link rel="icon" type="image/png"
+      href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAAbFBMVEUAAAD///+qqqqioqKOjo6Tk5P39/fd3d2kpKTS0tL6+voZGRl1dXWFhYWhpaUtLS1mZmYODg5LS0tvb2/BwcFpampmZmaIiIhoXFyUlJSbm5tTU1NGRA9mAAABXUlEQVQY0zXMRw7CIBCF4auujptSEvv//y/CrAlsyTdyHg7DBmgeU9UMsgMuW5gmwEO8irKkmQoZWsdEHLXDBXv8dO0ys9mvhDehsoCfdPBsFkC72wmCXzXX9GG8SMeK5WbBU6hLXqOdw7rpFg6X+jPjLP/SmzyA2/T69gvZteCAQxbcmUpMuKQAAAABJRU5ErkJggg==">
     <style>
+      
+        body {
+          transition: background-color 0.3s, color 0.3s;
+        }
+
+        body.light-mode {
+          background-color: #ffffff;
+          color: #000000;
+        }
+
+        body.dark-mode {
+          background-color: #121212;
+          color: #e0e0e0;
+        }
+
+        body.dark-mode .container {
+          background-color: #1e1e1e;
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+        }
+
+        body.dark-mode .filter-group {
+          background-color: #565656;
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+        }
+
+        body.dark-mode label {
+          color: #fffbfb;
+        }
+
+        body.dark-mode table {
+          background-color: #2b2b2b;
+          border-color: #444;
+        }
+
+        body.dark-mode th {
+          background-color: #3e3e3e;
+          color: #fff;
+        }
+
+        body.dark-mode tr:nth-child(even) {
+          background-color: #242424;
+        }
+
+        body.dark-mode tr:hover {
+          background-color: #333;
+        }
+
+        .theme-toggle {
+          position: fixed;
+          top: 10px;
+          right: 10px;
+          padding: 10px 20px;
+          background-color: #444;
+          color: #fff;
+          border: none;
+          border-radius: 5px;
+          cursor: pointer;
+        }
+
       body {
         font-family: Arial, sans-serif;
         background-color: #f4f6f8;
@@ -219,10 +279,6 @@
   color: #808080; /* Gray for null */
 }
 
-/* #212121 */
-
-
-
       @media (max-width: 600px) {
         select,
         input[type="text"],
@@ -234,7 +290,12 @@
   </head>
   <body>
     <div class="container">
-      <h2>Upload JSON or XLSX file of API Log</h2>
+      <h2>Upload JSON file of API Log</h2>
+
+      <body class="light-mode">
+        <button class="theme-toggle" onclick="toggleTheme()">Toggle Dark
+          Mode</button>
+      </body>
 
       <!-- <p style="text-align: left;">1. check log size in GET admin/api/v1/log/checkSize</p>
       <p style="text-align: left;">2. get api log response in GET admin/api/v1/log?total_page=1&page=1 (increase "total_page" if size too large)</p>
@@ -249,17 +310,17 @@
         <div class="filter-group">
           <label for="methodFilter">Method:</label>
           <select id="methodFilter">
-            <option value="">Select Method</option>
+            <option value>Select Method</option>
           </select>
 
           <label for="statusFilter">Status:</label>
           <select id="statusFilter">
-            <option value="">Select Status</option>
+            <option value>Select Status</option>
           </select>
 
           <label for="serviceNameFilter">Service Name:</label>
           <select id="serviceNameFilter">
-            <option value="">Select Service Name</option>
+            <option value>Select Service Name</option>
           </select>
         </div>
 
@@ -269,15 +330,13 @@
           <input
             type="text"
             id="requestIDFilter"
-            placeholder="Search by Request ID"
-          />
+            placeholder="Search by Request ID" />
 
           <label for="customerUuidFilter">Customer UUID:</label>
           <input
             type="text"
             id="customerUuidFilter"
-            placeholder="Search by Customer UUID"
-          />
+            placeholder="Search by Customer UUID" />
 
           <label for="sourceFilter">Source:</label>
           <input type="text" id="sourceFilter" placeholder="Search by Source" />
@@ -286,8 +345,7 @@
           <input
             type="text"
             id="endpointFilter"
-            placeholder="Search by Endpoint"
-          />
+            placeholder="Search by Endpoint" />
         </div>
         <div class="filter-group">
           <label for="HeaderFilter">Header:</label>
@@ -297,15 +355,13 @@
           <input
             type="text"
             id="RequestDataFilter"
-            placeholder="Search by RequestData"
-          />
+            placeholder="Search by RequestData" />
 
           <label for="ResponseDataFilter">ResponseData:</label>
           <input
             type="text"
             id="ResponseDataFilter"
-            placeholder="Search by ResponseData"
-          />
+            placeholder="Search by ResponseData" />
         </div>
 
         <!-- Date filters for createdAt field -->
@@ -347,7 +403,8 @@
         <button id="nextPage" onclick="changePage(1)" disabled>Next</button>
       </div>
     </div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.3/xlsx.full.min.js"></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.3/xlsx.full.min.js"></script>
 
     <script>
       let jsonData = []; // To hold the parsed JSON data
@@ -715,12 +772,12 @@
         const isExpanded = td.classList.contains("expanded");
         const multilineContent = document.createElement("div");
         multilineContent.className = "multiline-content";
-
+        
         try {
           const jsonObject = JSON.parse(fullText);
           multilineContent.innerHTML = syntaxHighlight(JSON.stringify(jsonObject, null, 2)); // Pretty-print JSON with colors
         } catch {
-          multilineContent.textContent = fullText; // Fallback to plain text
+          multilineContent.innerHTML = `<span style="color: #ce9178;">${fullText}</span>`; // Fallback to plain text with white color
         }
 
         td.innerHTML = isExpanded
@@ -866,19 +923,19 @@ function syntaxHighlight(json) {
       function getColorForMethod(method) {
         switch (method?.toLowerCase()) {
           case "get":
-            return "#71e66d"; // Light green for fetching data
+            return "#6cdd99"; // Light green for fetching data
           case "post":
-            return "yellow"; // Yellow for submitting data
+            return "#ffe47e"; // Yellow for submitting data
           case "put":
-            return "#6dcae6"; // Light blue for updating data
+            return "#74aef6"; // Light blue for updating data
           case "delete":
-            return "red"; // Red for deleting data
+            return "#f79a8e"; // Red for deleting data
           case "patch":
-            return "#f6a6a6"; // Light pink for partial updates
+            return "#c0a8e1"; // Light pink for partial updates
           case "options":
-            return "#ffcc80"; // Light orange for pre-flight requests
+            return "#f15eb0"; // Light orange for pre-flight requests
           case "head":
-            return "#c5e1a5"; // Light green for retrieving headers
+            return "#6cdd99"; // Light green for retrieving headers
           case "trace":
             return "#ffeb3b"; // Light yellow for diagnostic purposes
           case "connect":
@@ -1120,6 +1177,28 @@ function syntaxHighlight(json) {
         const dateString = new Date(dateInMs + msInDay);
         return new Date(dateInMs + msInDay);
       }
+      function toggleTheme() {
+    const body = document.body;
+    if (body.classList.contains('light-mode')) {
+      body.classList.remove('light-mode');
+      body.classList.add('dark-mode');
+      localStorage.setItem('theme', 'dark');
+    } else {
+      body.classList.remove('dark-mode');
+      body.classList.add('light-mode');
+      localStorage.setItem('theme', 'light');
+    }
+  }
+
+  // Preserve theme preference on reload
+  window.onload = () => {
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme) {
+      document.body.classList.add(savedTheme === 'dark' ? 'dark-mode' : 'light-mode');
+    } else {
+      document.body.classList.add('light-mode'); // Default theme
+    }
+  };
     </script>
   </body>
 </html>
