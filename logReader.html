@@ -186,6 +186,43 @@
         text-align: left;
       }
 
+      .multiline-content .default {
+  color: #ffffff; /* White for default symbols like {}, [], , */
+}
+
+      .multiline-content {
+  background-color: #212121; /* Gray background like Postman */
+  padding: 10px;
+  border-radius: 5px;
+  overflow-x: auto; /* Enable horizontal scrolling */
+  white-space: pre; /* Prevent text wrapping */
+  font-family: monospace;
+}
+
+.multiline-content .key {
+  color: #9cdcfe; /* Blue for keys */
+}
+
+.multiline-content .string {
+  color: #ce9178; /* Orange for strings */
+}
+
+.multiline-content .number {
+  color: #ffd700; /* Yellow for numbers */
+}
+
+.multiline-content .boolean {
+  color: #ff4500; /* Red-orange for booleans */
+}
+
+.multiline-content .null {
+  color: #808080; /* Gray for null */
+}
+
+/* #212121 */
+
+
+
       @media (max-width: 600px) {
         select,
         input[type="text"],
@@ -646,6 +683,34 @@
         }
       }
 
+      // function toggleText(td, fullText) {
+      //   const isExpanded = td.classList.contains("expanded");
+      //   const multilineContent = document.createElement("div");
+      //   multilineContent.className = "multiline-content";
+
+      //   try {
+      //     const jsonObject = JSON.parse(fullText);
+      //     multilineContent.textContent = JSON.stringify(jsonObject, null, 2); // Pretty-print JSON
+      //   } catch {
+      //     multilineContent.textContent = fullText; // Fallback to plain text
+      //   }
+
+      //   td.innerHTML = isExpanded
+      //     ? `<span class="text-preview">${fullText.slice(
+      //         0,
+      //         truncateLimit
+      //       )}...</span>`
+      //     : multilineContent.outerHTML;
+
+      //   const toggleButton = document.createElement("button");
+      //   toggleButton.textContent = isExpanded ? "See more..." : "See less...";
+      //   toggleButton.className = "expand-btn";
+      //   toggleButton.onclick = () => toggleText(td, fullText);
+      //   td.prepend(toggleButton);
+      //   // td.appendChild(toggleButton);
+      //   td.classList.toggle("expanded");
+      // }
+
       function toggleText(td, fullText) {
         const isExpanded = td.classList.contains("expanded");
         const multilineContent = document.createElement("div");
@@ -653,7 +718,7 @@
 
         try {
           const jsonObject = JSON.parse(fullText);
-          multilineContent.textContent = JSON.stringify(jsonObject, null, 2); // Pretty-print JSON
+          multilineContent.innerHTML = syntaxHighlight(JSON.stringify(jsonObject, null, 2)); // Pretty-print JSON with colors
         } catch {
           multilineContent.textContent = fullText; // Fallback to plain text
         }
@@ -670,9 +735,38 @@
         toggleButton.className = "expand-btn";
         toggleButton.onclick = () => toggleText(td, fullText);
         td.prepend(toggleButton);
-        // td.appendChild(toggleButton);
         td.classList.toggle("expanded");
+}
+
+// Function to highlight JSON
+function syntaxHighlight(json) {
+  json = json
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
+  return json.replace(
+    /("(\\u[\da-fA-F]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|\b-?\d+(?:\.\d*)?(?:[eE][+-]?\d+)?\b|[{}[\],])/g,
+    (match) => {
+      let cls = "default";
+      if (/^"/.test(match)) {
+        if (/:$/.test(match)) {
+          cls = "key";
+        } else {
+          cls = "string";
+        }
+      } else if (/true|false/.test(match)) {
+        cls = "boolean";
+      } else if (/null/.test(match)) {
+        cls = "null";
+      } else if (/^-?\d+/.test(match)) {
+        cls = "number";
       }
+      return `<span class="${cls}">${match}</span>`;
+    }
+  );
+}
+
+
 
       function updateTable() {
         const method = document.getElementById("methodFilter").value;
