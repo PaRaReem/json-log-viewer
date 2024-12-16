@@ -291,6 +291,22 @@
   color: #808080; /* Gray for null */
 }
 
+input[type="file"] {
+    display: flex;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Optional button shadow */
+}
+
+.upload-button span {
+    font-size: 16px; 
+}
+
+
 .export-button {
     display: flex;
     flex-direction: column; /* Stack icon and text vertically */
@@ -355,14 +371,48 @@ body.dark-mode #icon-moon {
 }
 
 body.light-mode #icon-moon {
-  display: none; /* Hide the moon icon in light mode */
+  display: none; 
 }
 
 
+.button {
+      display: flex; /* Use flexbox for centering */
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      margin-top: 10px;
+      width: 187.6px; /* Adjust width */
+      height: 316.67px; /* Add more height */
+      text-align: center;
+      color: white;
+      font-size: 16px;
+      border-radius: 8px; /* Rounded corners */
+      cursor: pointer;
+      border: none;
+      outline: none;
+      background-color: #007bff; /* Blue color */
+      transition: background-color 0.3s ease;
+    }
+
+    /* Hover effect for button */
+    .button:hover {
+      background-color: #0056b3;
+    }
+
+    /* Hidden file input */
+    #fileInput {
+      display: none;
+    }
+
+    /* Icon styling */
+    .button i {
+      font-size: 36px; /* Icon size */
+      margin-bottom: 10px; /* Space between icon and text */
+    }
 
 .content {
-    position: relative; /* This creates a containing block for absolutely positioned elements */
-    z-index: 1;         /* Lower z-index value, so content stays behind */
+    position: relative; 
+    z-index: 1;        
 }
 
 
@@ -378,21 +428,17 @@ body.light-mode #icon-moon {
   <body>
 
     <div class="container">
-      <img src="log.png" alt="Description of Image" style="width: 10%; height: auto;">
+      <img src="log.png" alt="Description of Image"
+        style="width: 10%; height: auto;">
 
-      <h2>Upload JSON or XLSX file of API Log</h2>
+      <!-- <h2>Upload JSON or XLSX file of API Log</h2> -->
 
       <button class="theme-toggle" onclick="toggleTheme()">
         <span id="icon-sun" class="icon">&#x2600;</span>
         <span id="icon-moon" class="icon">&#x1F319;</span>
       </button>
 
-      <!-- <p style="text-align: left;">1. check log size in GET admin/api/v1/log/checkSize</p>
-      <p style="text-align: left;">2. get api log response in GET admin/api/v1/log?total_page=1&page=1 (increase "total_page" if size too large)</p>
-      <p style="text-align: left;">3. press "..." and save response to file</p>
-      <p style="text-align: left;">4. upload it</p> -->
-
-      <input type="file" id="fileInput" multiple accept=".json, .xls, .xlsx" />
+      <!-- <input type="file" id="fileInput" multiple accept=".json, .xls, .xlsx" /> -->
       <div id="output"></div>
 
       <div class="filter-container">
@@ -483,6 +529,13 @@ body.light-mode #icon-moon {
 
           <button onclick="clearFilters()">Clear Filters</button>
         </div>
+        <!-- <input class="import-input" type="file" id="fileInput" multiple accept=".json, .xls, .xlsx" /> -->
+        <label for="fileInput" class="button upload-button">
+          <span class="upload-button">Choose File</span>
+          <i class="fas fa-file-upload" style="margin-top: 30px;"></i>
+        </label>
+        <input type="file" id="fileInput" multiple accept=".json, .xls, .xlsx">
+        <!-- <input type="file" id="fileInput" multiple accept=".json, .xls, .xlsx" /> -->
         <button onclick="exportJSONToXLSX()" class="export-button">
           <span>Export to Excel</span>
           <i class="fas fa-file-download" style="margin-top: 30px;"></i>
