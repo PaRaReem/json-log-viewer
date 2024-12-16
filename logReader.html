@@ -9,7 +9,10 @@
     <link
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
       rel="stylesheet">
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css" integrity="sha512-1sCRPdkRXhBV2PBLUdRb4tMg1w2YPf37qatUFeS7zlBy7jJI8Lf4VHwWfZZfpXtYSLy85pkm9GaYVYMfw5BC1A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css"
+      integrity="sha512-1sCRPdkRXhBV2PBLUdRb4tMg1w2YPf37qatUFeS7zlBy7jJI8Lf4VHwWfZZfpXtYSLy85pkm9GaYVYMfw5BC1A=="
+      crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <style>
       
@@ -312,7 +315,7 @@
 }
 
 .export-button span {
-    font-size: 18px; /* Slightly larger text size */
+    font-size: 16px; /* Slightly larger text size */
 }
 
 .export-button:hover {
@@ -357,6 +360,13 @@ body.light-mode #icon-moon {
 }
 
 
+
+.content {
+    position: relative; /* This creates a containing block for absolutely positioned elements */
+    z-index: 1;         /* Lower z-index value, so content stays behind */
+}
+
+
       @media (max-width: 600px) {
         select,
         input[type="text"],
@@ -367,13 +377,14 @@ body.light-mode #icon-moon {
     </style>
   </head>
   <body>
+
     <div class="container">
       <h2>Upload JSON or XLSX file of API Log</h2>
 
-        <button class="theme-toggle" onclick="toggleTheme()">
-          <span id="icon-sun" class="icon">&#x2600;</span>
-          <span id="icon-moon" class="icon">&#x1F319;</span>
-        </button>
+      <button class="theme-toggle" onclick="toggleTheme()">
+        <span id="icon-sun" class="icon">&#x2600;</span>
+        <span id="icon-moon" class="icon">&#x1F319;</span>
+      </button>
 
       <!-- <p style="text-align: left;">1. check log size in GET admin/api/v1/log/checkSize</p>
       <p style="text-align: left;">2. get api log response in GET admin/api/v1/log?total_page=1&page=1 (increase "total_page" if size too large)</p>
@@ -386,56 +397,77 @@ body.light-mode #icon-moon {
       <div class="filter-container">
         <!-- Dropdowns for filtering -->
         <div class="filter-group">
-          <label for="methodFilter">Method:</label>
+          <label style="font-weight: 1000; font-size: 16px;"
+            for="methodFilter">Method</label>
           <select id="methodFilter">
             <option value>Select Method</option>
           </select>
 
-          <label for="statusFilter">Status:</label>
+          <label style="font-weight: 1000; font-size: 16px;"
+            for="statusFilter">Status</label>
           <select id="statusFilter">
             <option value>Select Status</option>
           </select>
 
-          <label for="serviceNameFilter">Service Name:</label>
+          <label style="font-weight: 1000; font-size: 16px;"
+            for="serviceNameFilter">Service Name</label>
           <select id="serviceNameFilter">
             <option value>Select Service Name</option>
           </select>
         </div>
-
-        <!-- New search fields for specific columns -->
         <div class="filter-group">
-          <label for="requestIDFilter">Request ID:</label>
+          <label style="font-weight: 1000; font-size: 16px;"
+            for="requestIDFilter">Request ID</label>
           <input
             type="text"
             id="requestIDFilter"
             placeholder="Search by Request ID" />
-
-          <label for="customerUuidFilter">Customer UUID:</label>
+          <label style="font-weight: 1000; font-size: 16px;"
+            for="customerUuidFilter">Customer UUID</label>
           <input
             type="text"
             id="customerUuidFilter"
             placeholder="Search by Customer UUID" />
-
-          <label for="sourceFilter">Source:</label>
+          <label style="font-weight: 1000; font-size: 16px;"
+            for="usernameFilter">Username</label>
+          <input
+            type="text"
+            id="usernameFilter"
+            placeholder="Search by Username" />
+          <label style="font-weight: 1000; font-size: 16px;"
+            for="apiVersionFilter">x-api-version</label>
+          <input
+            type="text"
+            id="apiVersionFilter"
+            placeholder="Search by x-api-version" />
+          <label style="font-weight: 1000; font-size: 16px;"
+            for="appVersionFilter">x-app-version</label>
+          <input
+            type="text"
+            id="appVersionFilter"
+            placeholder="Search by x-app-version" />
+        </div>
+        <div class="filter-group">
+          <label style="font-weight: 1000; font-size: 16px;"
+            for="sourceFilter">Source</label>
           <input type="text" id="sourceFilter" placeholder="Search by Source" />
-
-          <label for="endpointFilter">Endpoint:</label>
+          <label style="font-weight: 1000; font-size: 16px;"
+            for="endpointFilter">Endpoint</label>
           <input
             type="text"
             id="endpointFilter"
             placeholder="Search by Endpoint" />
-        </div>
-        <div class="filter-group">
-          <label for="HeaderFilter">Header:</label>
+          <label style="font-weight: 1000; font-size: 16px;"
+            for="HeaderFilter">Header</label>
           <input type="text" id="HeaderFilter" placeholder="Search by Header" />
-
-          <label for="RequestDataFilter">RequestData:</label>
+          <label style="font-weight: 1000; font-size: 16px;"
+            for="RequestDataFilter">RequestData</label>
           <input
             type="text"
             id="RequestDataFilter"
             placeholder="Search by RequestData" />
-
-          <label for="ResponseDataFilter">ResponseData:</label>
+          <label style="font-weight: 1000; font-size: 16px;"
+            for="ResponseDataFilter">ResponseData</label>
           <input
             type="text"
             id="ResponseDataFilter"
@@ -444,7 +476,8 @@ body.light-mode #icon-moon {
 
         <!-- Date filters for createdAt field -->
         <div class="filter-group">
-          <label for="createdAtStart">Date:</label>
+          <label style="font-weight: 1000; font-size: 16px;"
+            for="createdAtStart">Date</label>
           <input type="date" id="createdAtStart" />
 
           <button onclick="clearFilters()">Clear Filters</button>
@@ -513,6 +546,15 @@ body.light-mode #icon-moon {
         .addEventListener("change", updateTable);
       document
         .getElementById("customerUuidFilter")
+        .addEventListener("change", updateTable);
+        document
+        .getElementById("usernameFilter")
+        .addEventListener("change", updateTable);
+        document
+        .getElementById("apiVersionFilter")
+        .addEventListener("change", updateTable);
+        document
+        .getElementById("appVersionFilter")
         .addEventListener("change", updateTable);
       document
         .getElementById("sourceFilter")
@@ -942,6 +984,18 @@ function syntaxHighlight(json) {
           .getElementById("customerUuidFilter")
           .value?.toLowerCase()
           .trim();
+          const username = document
+          .getElementById("usernameFilter")
+          .value?.toLowerCase()
+          .trim();
+          const apiVersion = document
+          .getElementById("apiVersionFilter")
+          .value?.toLowerCase()
+          .trim();
+          const appVersion = document
+          .getElementById("appVersionFilter")
+          .value?.toLowerCase()
+          .trim();
         const source = document
           .getElementById("sourceFilter")
           .value?.toLowerCase()
@@ -964,6 +1018,7 @@ function syntaxHighlight(json) {
           .trim();
         const createdAtStart = document.getElementById("createdAtStart").value;
         filteredData = jsonData.filter((item) => {
+          console.log("item", item)
           const matchesMethod = method ? item.method === method : true;
           const matchesStatus = status ? item.status === Number(status) : true; // Convert to number for comparison
           const matchesServiceName = serviceName
@@ -973,7 +1028,19 @@ function syntaxHighlight(json) {
             ? item.requestID &&
               item.requestID?.toLowerCase().includes(requestID)
             : true;
-          const matchesCustomerUuid = customerUuid
+          const matchesUsername = username
+            ? item.username &&
+              item.username?.toLowerCase().includes(username)
+            : true;
+            const matchesApiVersion = apiVersion
+            ? item['x-api-version'] &&
+            item['x-api-version']?.toLowerCase().includes(apiVersion)
+            : true;
+            const matchesAppVersion = appVersion
+            ? item['x-app-version'] &&
+            item['x-app-version']?.toLowerCase().includes(appVersion)
+            : true;
+            const matchesCustomerUuid = customerUuid
             ? item.customerUuid &&
               item.customerUuid?.toLowerCase().includes(customerUuid)
             : true;
@@ -1011,6 +1078,9 @@ function syntaxHighlight(json) {
             matchesServiceName &&
             matchesRequestID &&
             matchesCustomerUuid &&
+            matchesUsername &&
+            matchesApiVersion &&
+            matchesAppVersion &&
             matchesSource &&
             matchesEndpoint &&
             matchesHeader &&
@@ -1246,6 +1316,9 @@ function syntaxHighlight(json) {
         document.getElementById("serviceNameFilter").value = "";
         document.getElementById("requestIDFilter").value = "";
         document.getElementById("customerUuidFilter").value = "";
+        document.getElementById("usernameFilter").value = "";
+        document.getElementById("apiVersionFilter").value = "";
+        document.getElementById("appVersionFilter").value = "";
         document.getElementById("sourceFilter").value = "";
         document.getElementById("endpointFilter").value = "";
         document.getElementById("HeaderFilter").value = "";
