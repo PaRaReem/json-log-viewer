@@ -784,7 +784,7 @@ body.light-mode #icon-moon {
             requestID: log.requestID || log.request_id,
             serviceName: log.serviceName || log.service_name,
             method: log.method,
-            status: log.status,
+            status: Number(log.status),
             endpoint: log.endpoint,
             source: log.source,
             header: log.header,
