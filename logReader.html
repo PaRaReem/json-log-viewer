@@ -1182,7 +1182,7 @@ function syntaxHighlight(json) {
       }
 
       function getColorForStatus(status) {
-        switch (status) {
+        switch (Number(status)) {
           // Informational responses (100-199)
           case 100:
             return "#d0e6ff"; // Light blue
