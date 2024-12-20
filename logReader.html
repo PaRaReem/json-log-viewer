@@ -529,7 +529,7 @@ body.light-mode #icon-moon {
           <div
             style="display: flex; gap: 10px; align-items: center; margin-top: 10px; margin-bottom: 10px;">
             <input type="radio" id="env" name="env"
-              value="SIT" onclick="setEnv(this.value)" checked>
+              value="SIT" onclick="setEnv(this.value)">
             <label for="env">SIT</label>
             <input type="radio" id="env" name="env"
               value="UAT" onclick="setEnv(this.value)">
@@ -541,7 +541,7 @@ body.light-mode #icon-moon {
             type="text"
             id="token"
             placeholder="Token" />
-          <button onclick="fetchAPI()">Fetch Latest Log</button>
+          <button onclick="setToken()">Fetch Latest Log</button>
         </div>
         <label for="fileInput" class="button upload-button">
           <span class="upload-button">Choose File</span>
@@ -584,14 +584,13 @@ body.light-mode #icon-moon {
     </div>
     <script
       src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.3/xlsx.full.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script>
 
       let jsonData = []; 
       let filteredData = []; 
       let currentPage = 1;
       let rowsPerPage = 25; 
-      let url = 'https://api.app.dev.principal.th/admin/api/v1/log?include_username=true&total_page=646&page=1'
+      let url = ''
       const truncateLimit = 30; 
       const expandableKeys = ["header", "requestData", "responseData"]; 
       const copyKey = ["source", "customerUuid", "requestID", "username"]; 
@@ -602,27 +601,12 @@ body.light-mode #icon-moon {
       }
       const setEnv = (value) => {
         if (value === 'SIT') {
-          url = 'https://api.app.dev.principal.th/admin/api/v1/log?include_username=true&total_page=646&page=1'
+          link = 'https://api.app.staging.principal.th/admin/api/v1/log?include_username=true&total_page=646&page=1'
         } else if (value === 'UAT') {
-          url = 'https://api.app.staging.principal.th/admin/api/v1/log?include_username=true&total_page=646&page=1'
+          link = 'https://api.app.staging.principal.th/admin/api/v1/log?include_username=true&total_page=646&page=1'
         }
       }
-      const fetchAPI = () => {
-        const checktoken = document.getElementById('token').value;
-        axios.get(url, {
-          headers: {
-            userId:'4c34502a-eeb2-43d3-9b2e-a67d72e55947',
-            id_token: `Bearer ${checktoken}`
-          }
-        })
-        .then(response => {
-        console.log('Response:', response.data);
-          })
-        .catch(error => {
-        console.error('Error:', error);
-        });
-      }
-      console.log("url", url)
+      console.log("link", link)
       document
         .getElementById("fileInput")
         .addEventListener("change", handleFileUpload);
@@ -734,7 +718,18 @@ body.light-mode #icon-moon {
                 const sheetData = XLSX.utils.sheet_to_json(
                   workbook.Sheets[sheetName]
                 );
-               
+                // sheetData.forEach((row) => {
+                //   if (row.createdAt) {
+                //     row.createdAt = excelDateToJSDate(
+                //       row.createdAt
+                //     ).toISOString();
+                //   }
+                //   if (row.created_at) {
+                //     row.createdAt = excelDateToJSDate(
+                //       row.created_at
+                //     ).toISOString();
+                //   }
+                // });
                 jsonDataArray.push(...sheetData); // Merge Excel data
               } catch (error) {
                 console.log("error", error.message)
