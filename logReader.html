@@ -522,27 +522,6 @@ body.light-mode #icon-moon {
           <input type="date" id="createdAtStart" />
           <button onclick="clearFilters()">Clear Filters</button>
         </div>
-        <!-- group 5 -->
-        <div class="filter-group">
-          <label style="font-weight: 1000; font-size: 16px;"
-            for="createdAtStart">Environment</label>
-          <div
-            style="display: flex; gap: 10px; align-items: center; margin-top: 10px; margin-bottom: 10px;">
-            <input type="radio" id="env" name="env"
-              value="SIT" onclick="setEnv(this.value)">
-            <label for="env">SIT</label>
-            <input type="radio" id="env" name="env"
-              value="UAT" onclick="setEnv(this.value)">
-            <label for="env">UAT</label>
-          </div>
-          <label style="font-weight: 1000; font-size: 16px;"
-            for="token">Token</label>
-          <input
-            type="text"
-            id="token"
-            placeholder="Token" />
-          <button onclick="setToken()">Fetch Latest Log</button>
-        </div>
         <label for="fileInput" class="button upload-button">
           <span class="upload-button">Choose File</span>
           <i class="fas fa-file-upload" style="margin-top: 30px;"></i>
@@ -595,27 +574,13 @@ body.light-mode #icon-moon {
       const expandableKeys = ["header", "requestData", "responseData"]; 
       const copyKey = ["source", "customerUuid", "requestID", "username"]; 
       const sortDirection = {}; 
-      const token = localStorage.getItem("id_token"); 
-      const setToken = (event) => {
-        localStorage.setItem("id_token", event.target.value);
-      }
-      const setEnv = (value) => {
-        if (value === 'SIT') {
-          link = 'https://api.app.staging.principal.th/admin/api/v1/log?include_username=true&total_page=646&page=1'
-        } else if (value === 'UAT') {
-          link = 'https://api.app.staging.principal.th/admin/api/v1/log?include_username=true&total_page=646&page=1'
-        }
-      }
-      console.log("link", link)
+    
       document
         .getElementById("fileInput")
         .addEventListener("change", handleFileUpload);
       document
         .getElementById("methodFilter")
         .addEventListener("change", updateTable);
-        document
-        .getElementById("token")
-        .addEventListener("change", setToken);
       document
         .getElementById("statusFilter")
         .addEventListener("change", updateTable);
