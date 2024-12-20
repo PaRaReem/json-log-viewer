@@ -1451,9 +1451,9 @@ body.light-mode #icon-moon {
   window.onload = () => {
     const savedTheme = localStorage.getItem('theme');
     if (savedTheme) {
-      document.body.classList.add(savedTheme === 'dark' ? 'dark-mode' : 'light-mode');
+      document.body.classList.add(savedTheme === 'light' ? 'light-mode' : 'dark-mode');
     } else {
-      document.body.classList.add('light-mode'); // Default theme
+      document.body.classList.add('dark-mode'); // Default theme
     }
   };
     </script>
